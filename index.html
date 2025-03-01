@@ -14,9 +14,9 @@
   <link rel="manifest" href="https://kkgs-32-Studio.github.io/icon/manifest.json">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
   <script type="module">
-    import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
-    import { getAuth, signOut, onAuthStateChanged, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+    import { getAuth, signOut, onAuthStateChanged, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
 
     // Firebase設定
     const firebaseConfig = {
@@ -304,11 +304,39 @@
           <button class="button is-primary is-outlined" type="submit">投稿</button>
         </form>
         <hr>
+        <div class="field">
+          <label class="label">
+            <p id="status">メール通知サービス</p>
+            <input class="input" id="gmail" placeholder="パスワード">
+          </label>
+          <button class="button is-primary is-outlined" onclick="checkGmail()">送信</button>
+        </div>
+        <hr>
         <h3 class="title is-4">投稿済みの記事</h3>
         <div id="postList"></div>
       </div>
     </div>
   </section>
+  <script>
+    function checkGmail() {
+      const url = "https://script.google.com/macros/s/AKfycby-wPWFAuEGiHRtVOT7oYweFHo34c6VzHlaHP2vDpOFF-ddcxznXnflBYSqMKuKrw5vMQ/exec";
+      const gmail = document.getElementById("gmail").value;
+
+      fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "gmail=" + encodeURIComponent(gmail)
+      })
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById("status").innerText = data.message;
+        })
+        .catch(error => {
+          console.error("エラー:", error);
+          document.getElementById("status").innerText = "エラー発生";
+        });
+    }
+  </script>
 </body>
 
 </html>
